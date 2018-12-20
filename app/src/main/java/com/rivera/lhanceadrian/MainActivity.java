@@ -17,19 +17,19 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText etFullName, etAge, etGender;
+    EditText etFName, etAge, etGender;
     Button btnSearch, btnSave;
     TextView viewName, viewAge, viewGender;
 
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();;
+    DatabaseReference myRef = database.getReference("Record");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        database = FirebaseDatabase.getInstance();
-        etFullName = findViewById(R.id.etFullName);
+
+        etFName = findViewById(R.id.etFName);
         etAge = findViewById(R.id.etAge);
         etGender = findViewById(R.id.etGender);
         btnSave = findViewById(R.id.btnSave);
@@ -37,16 +37,15 @@ public class MainActivity extends AppCompatActivity {
         viewName = findViewById(R.id.viewName);
         viewAge = findViewById(R.id.viewAge);
         viewGender = findViewById(R.id.viewGender);
-        myRef = database.getReference("Record");
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fullname = etFullName.getText().toString().trim();
+                String fullname = etFName.getText().toString().trim();
                 String age = etAge.getText().toString().trim();
                 String gender = etGender.getText().toString().trim();
                 if(fullname.isEmpty() || age.isEmpty() || gender.isEmpty()){
                     if(fullname.isEmpty()){
-                        etFullName.setError("Please input field.");
+                        etFName.setError("Please input field.");
                     }
                     if(age.isEmpty()){
                         etAge.setError("Please input field.");
@@ -67,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String name = etFullName.getText().toString().trim();
+                final String name = etFName.getText().toString().trim();
 
                 if(name.isEmpty()){
-                    etFullName.setError("Please input field");
+                    etFName.setError("Please input field");
                 }else{
                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
