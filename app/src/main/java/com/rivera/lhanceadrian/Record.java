@@ -1,6 +1,8 @@
 package com.rivera.lhanceadrian;
 
-public class Name {
+
+
+public class Record {
     String age;
     String gender;
 
@@ -20,9 +22,11 @@ public class Name {
         this.gender = gender;
     }
 
-    public Name(String age, String gender) {
+    public Record(String age, String gender) {
 
         this.age = age;
         this.gender = gender;
     }
 }
+
+

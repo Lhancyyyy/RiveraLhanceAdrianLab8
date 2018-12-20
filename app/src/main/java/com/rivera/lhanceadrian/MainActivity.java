@@ -16,12 +16,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
+
     EditText etFullName, etAge, etGender;
     Button btnSearch, btnSave;
+    TextView viewName, viewAge, viewGender;
 
     FirebaseDatabase database;
     DatabaseReference myRef;
-    TextView viewName, viewAge, viewGender;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         viewName = findViewById(R.id.viewName);
         viewAge = findViewById(R.id.viewAge);
         viewGender = findViewById(R.id.viewGender);
-        myRef = database.getReference("Names");
+        myRef = database.getReference("Record");
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 }else{
 
 
-                    Name name = new Name(age,gender);
-                    myRef.child(fullname).setValue(name);
+                   Record rec = new Record(age,gender);
+                    myRef.child(fullname).setValue(rec);
                     Toast.makeText(MainActivity.this, "Save Success.", Toast.LENGTH_SHORT).show();
                 }
             }
