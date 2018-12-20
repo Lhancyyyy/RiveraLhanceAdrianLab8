@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1996180865",
+    "firebase_url": "https://riveralhanceadrianlab8.firebaseio.com",
+    "project_id": "riveralhanceadrianlab8",
+    "storage_bucket": "riveralhanceadrianlab8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1996180865:android:273784bd46c123ae",
+        "android_client_info": {
+          "package_name": "com.rivera.lhanceadrian"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1996180865-oq3ok7vsg0igr3a1mk6vgnmbvif02d13.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rivera.lhanceadrian",
+            "certificate_hash": "7d5668ad19fd895e0f00d376cf29a838cf2e0fd5"
+          }
+        },
+        {
+          "client_id": "1996180865-alp3d87b9hdie1uu29c00muuo6lpg2qa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCV4W7IyxOh_MOEFdteDtkVTKv4n4A-NY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1996180865-alp3d87b9hdie1uu29c00muuo6lpg2qa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
