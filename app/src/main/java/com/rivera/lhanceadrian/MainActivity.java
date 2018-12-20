@@ -1,57 +1,106 @@
 package com.rivera.lhanceadrian;
 
-import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
+    EditText etFullName, etAge, etGender;
+    Button btnSearch, btnSave;
 
-    EditText etFname;
-    EditText etAge;
-    EditText etGender;
-    Button btSave;
-    Button btSearch;
-    TextView tvDisplay;
-
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    TextView viewName, viewAge, viewGender;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-       tvDisplay = findViewById(R.id.display);
-       etFname = findViewById(R.id.fname);
-       etAge = findViewById(R.id.age);
-       etGender = findViewById(R.id.gender);
-       btSave = findViewById(R.id.save);
-        btSave.setOnClickListener(new View.OnClickListener() {
+        database = FirebaseDatabase.getInstance();
+        etFullName = findViewById(R.id.etFullName);
+        etAge = findViewById(R.id.etAge);
+        etGender = findViewById(R.id.etGender);
+        btnSave = findViewById(R.id.btnSave);
+        btnSearch = findViewById(R.id.btnSearch);
+        viewName = findViewById(R.id.viewName);
+        viewAge = findViewById(R.id.viewAge);
+        viewGender = findViewById(R.id.viewGender);
+        myRef = database.getReference("Names");
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertRecord();
+                String fullname = etFullName.getText().toString().trim();
+                String age = etAge.getText().toString().trim();
+                String gender = etGender.getText().toString().trim();
+                if(fullname.isEmpty() || age.isEmpty() || gender.isEmpty()){
+                    if(fullname.isEmpty()){
+                        etFullName.setError("Please input field.");
+                    }
+                    if(age.isEmpty()){
+                        etAge.setError("Please input field.");
+                    }
+                    if(gender.isEmpty()){
+                        etGender.setError("Please input field.");
+                    }
+                }else{
+
+
+                    Name name = new Name(age,gender);
+                    myRef.child(fullname).setValue(name);
+                    Toast.makeText(MainActivity.this, "Save Success.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-       btSearch = findViewById(R.id.search);
 
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String name = etFullName.getText().toString().trim();
 
-    }
+                if(name.isEmpty()){
+                    etFullName.setError("Please input field");
+                }else{
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            int status = 0;
+                            for(DataSnapshot ds: dataSnapshot.getChildren()){
+                                if(ds.getKey().equals(name)){
+                                    Toast.makeText(MainActivity.this, "Name found.", Toast.LENGTH_SHORT).show();
+                                    String age = (String) ds.child("age").getValue();
+                                    String gender = (String) ds.child("gender").getValue();
+                                    viewName.setText(name);
+                                    viewAge.setText(age);
+                                    viewGender.setText(gender);
+                                    status = 1;
+                                }
+                            }
+                            if(status != 1){
+                                Toast.makeText(MainActivity.this, "Name not found.", Toast.LENGTH_SHORT).show();
+                                viewName.setText("");
+                                viewAge.setText("");
+                                viewGender.setText("");
+                            }
+                        }
 
-   public void insertRecord(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-       DatabaseReference root =  database.getReference("Record");
-       String fname = etFname.getText().toString().trim();
-       String gender = etGender.getText().toString().trim();
-       int age = Integer.parseInt(etAge.getText().toString().trim());
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-       Record srecord = new Record(fname,gender,age);
-       String key = root.push().getKey();
-       root.child(key).setValue(srecord);
-       Toast.makeText(this,"record added to db",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
 
 
     }
